@@ -15,6 +15,8 @@ locals {
   vnet_address_space = ["10.1.0.0/16"]
   subnet_name = "default"
   subnet_prefix = ["10.1.0.0/24"]
+  vm_name = "VM-${var.prefix}"
+  vm_nic_name = "nic-${var.prefix}"
 }
 
 resource "random_integer" "random" {
@@ -90,6 +92,45 @@ resource "azurerm_storage_account" "mysa" {
 
 }
 
+resource "azurerm_network_interface" "mynic" {
+  name = local.vm_nic_name
+  location = var.region
+  resource_group_name = local.rg_name
+
+  ip_configuration {
+    name = "internal"
+    subnet_id = azurerm_subnet.mysubnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+resource "azurerm_linux_virtual_machine" "myubuntu" {
+  name = local.vm_name
+  resource_group_name = local.rg_name
+  location = var.region
+  size = "Standard_F2"
+  admin_username = "adminuser"
+  network_interface_ids = [
+    azurerm_network_interface.mynic.id,
+  ]
+
+  os_disk {
+    caching = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+admin_ssh_key {
+    username   = "adminuser"
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer = "UbuntuServer"
+    sku = "18.04 LTS"
+    version = "Latest"
+  }
+}
 #output
 output "sa_name" {
   value = azurerm_storage_account.mysa.name
