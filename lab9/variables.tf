@@ -1,7 +1,7 @@
-variable rg_names {
-    type = list(string)    
+variable "rg_names" {
+  type = list(string)
 }
 
-variable vnets {
-    type = list(map(string))    
+variable "vnets" {
+  type = list(map(string))
 }

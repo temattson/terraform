@@ -11,11 +11,11 @@ terraform {
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
-    features {}
+  features {}
 }
 
 module "connectedrg" {
-    source = "./modules/connnectedrg"
-    rg_names = var.rg_names
-    vnets = var.vnets
+  source   = "./modules/connnectedrg"
+  rg_names = var.rg_names
+  vnets    = var.vnets
 }
