@@ -95,7 +95,7 @@ resource "azurerm_storage_account" "mysa" {
 resource "azurerm_network_interface" "mynic" {
   name = local.vm_nic_name
   location = var.region
-  resource_group_name = local.rg_name
+  resource_group_name = azurerm_resource_group.myrg.name
 
   ip_configuration {
     name = "internal"
@@ -104,9 +104,10 @@ resource "azurerm_network_interface" "mynic" {
   }
 }
 
+# Create a ubuntu VM
 resource "azurerm_linux_virtual_machine" "myubuntu" {
   name = local.vm_name
-  resource_group_name = local.rg_name
+  resource_group_name = azurerm_resource_group.myrg.name
   location = var.region
   size = "Standard_B2s"
   admin_username = "adminuser"
@@ -127,8 +128,8 @@ admin_ssh_key {
   source_image_reference {
     publisher = "Canonical"
     offer = "UbuntuServer"
-    sku = "18.04 LTS"
-    version = "Latest"
+    sku = "18.04-LTS"
+    version = "latest"
   }
 }
 #output
