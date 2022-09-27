@@ -108,7 +108,7 @@ resource "azurerm_linux_virtual_machine" "myubuntu" {
   name = local.vm_name
   resource_group_name = local.rg_name
   location = var.region
-  size = "Standard_F2"
+  size = "Standard_B2s"
   admin_username = "adminuser"
   network_interface_ids = [
     azurerm_network_interface.mynic.id,
