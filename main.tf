@@ -16,7 +16,7 @@ locals {
   subnet_name = "default"
   subnet_prefix = ["10.1.0.0/24"]
   vm_name = "VM-${var.prefix}"
-  vm_nic_name = "nic-${var.prefix}"
+  vm_nic_name = "nic-${local.vmname}"
 }
 
 resource "random_integer" "random" {
@@ -85,7 +85,7 @@ resource "azurerm_storage_account" "mysa" {
   account_tier = "Standard"
   account_replication_type = "LRS"
   network_rules {
-    default_action             = "Deny"
+    default_action = "Deny"
     ip_rules = [ "81.191.45.166" ]
     virtual_network_subnet_ids = [azurerm_subnet.mysubnet.id]
   }
@@ -120,7 +120,7 @@ resource "azurerm_linux_virtual_machine" "myubuntu" {
     storage_account_type = "Standard_LRS"
   }
 
-admin_ssh_key {
+  admin_ssh_key {
     username   = "adminuser"
     public_key = file("~/.ssh/id_rsa.pub")
   }
