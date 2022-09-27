@@ -16,7 +16,7 @@ locals {
   subnet_name = "default"
   subnet_prefix = ["10.1.0.0/24"]
   vm_name = "VM-${var.prefix}"
-  vm_nic_name = "nic-${local.vm-name}"
+  vm_nic_name = "nic-${local.vm_name}"
 }
 
 resource "random_integer" "random" {
